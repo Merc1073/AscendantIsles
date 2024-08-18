@@ -1845,12 +1845,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665936447}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &682484729 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2124330805277486848, guid: 7d6290227ff61f54bb6408169d319f7a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5547897240619199448}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &830604744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2142,37 +2136,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126912817}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1144384853
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1144384854}
-  m_Layer: 0
-  m_Name: DashOrientation
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1144384854
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144384853}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 682484729}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1229521289
 GameObject:
   m_ObjectHideFlags: 0
@@ -4572,71 +4535,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
         type: 3}
-      propertyPath: dashForce
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1291944067}
     - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
         type: 3}
-      propertyPath: maxVelocity
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: dashVelocity
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: totalJumpCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: cameraSmoothTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: currentJumpCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
       propertyPath: cameraOrientation
       value: 
       objectReference: {fileID: 1291944068}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: playerOrientation
-      value: 
-      objectReference: {fileID: 1465825583}
-    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: dashVelocityReduceTime
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 5516451960422682550, guid: 7d6290227ff61f54bb6408169d319f7a,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7187358934066090438, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      propertyPath: m_Name
-      value: PlayerOrientation
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2124330805277486848, guid: 7d6290227ff61f54bb6408169d319f7a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1144384854}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d6290227ff61f54bb6408169d319f7a, type: 3}
 --- !u!1660057539 &9223372036854775807

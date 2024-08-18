@@ -83,6 +83,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2190512846149151270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4847197625411628452}
+  m_Layer: 0
+  m_Name: DashOrientation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4847197625411628452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2190512846149151270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2124330805277486848}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5516451960422682550
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +150,7 @@ Transform:
   - {fileID: 1100468305011639502}
   - {fileID: 8834160798725206283}
   - {fileID: 7914661728667273328}
+  - {fileID: 4847197625411628452}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &519452262572717499
@@ -179,17 +211,39 @@ MonoBehaviour:
   moveVertical: 0
   moveDirection: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
+  magnitude: 0
   groundDrag: 5
+  maxVelocity: 20
+  originalVelocity: 0
+  totalJumpCount: 2
+  currentJumpCount: 0
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 0.4
-  canJump: 0
+  totalDashCount: 2
+  currentDashCount: 0
+  dashForce: 50
+  dashTimer: 0
+  dashVelocity: 50
+  dashVelocityReduceTime: 30
+  isDashing: 0
+  coyoteTime: 0.2
+  coyoteTimeCounter: 0
+  jumpBufferTime: 0.2
+  jumpBufferCounter: 0
   playerHeight: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
-  orientation: {fileID: 8834160798725206283}
+  currentCameraFOV: 0
+  minCameraFOV: 90
+  maxCameraFOV: 150
+  cameraSmoothTime: 0.2
+  cameraVelocityFOV: 0
+  mainCamera: {fileID: 0}
+  playerOrientation: {fileID: 8834160798725206283}
+  cameraOrientation: {fileID: 0}
   rb: {fileID: 519452262572717499}
 --- !u!1 &7187358934066090438
 GameObject:
@@ -201,7 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8834160798725206283}
   m_Layer: 0
-  m_Name: Orientation
+  m_Name: PlayerOrientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
