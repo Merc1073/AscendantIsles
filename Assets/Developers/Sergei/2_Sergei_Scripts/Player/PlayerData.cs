@@ -13,12 +13,27 @@ public class PlayerData : MonoBehaviour
     public Vector3 moveDirection;
     public Vector3 velocity;
     public float groundDrag;
+    public float maxVelocity;
 
     [Header("Jumping Variables")]
+    public int totalJumpCount = 1;
+    public int currentJumpCount = 1;
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    public bool canJump;
+
+    [Header("Dashing Variables")]
+    public int totalDashCount = 2;
+    public int currentDashCount = 0;
+    public float dashForce;
+    public float dashTimer;
+    //public bool isDashing = false;
+
+    [Header("QoL Platforming Variables")]
+    public float coyoteTime = 0.2f;
+    public float coyoteTimeCounter;
+    public float jumpBufferTime = 0.2f;
+    public float jumpBufferCounter;
 
     [Header("Ground Check")]
     public float playerHeight;

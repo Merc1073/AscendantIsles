@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class PlayerMovingState : PlayerBaseState
+public class PlayerAerialState : PlayerBaseState
 {
     public override void EnterState(PlayerStateManager player)
     {
-        Debug.Log("Player is MOVING.");
+        Debug.Log("Player is AERIAL.");
     }
 
     public override void UpdateState(PlayerStateManager player)
@@ -15,32 +15,24 @@ public class PlayerMovingState : PlayerBaseState
         HandleDrag(player);
         SpeedControl(player);
 
-        //Reset the player jump count so they can jump again
-        if (player.data.isGrounded)
-        {
-            player.data.currentJumpCount = 0;
-        }
-
-        //Switch State to IDLE if player's velocity is 0
-        if (player.data.rb.velocity == new Vector3(0, 0, 0))
-        {
-            player.SwitchState(PlayerState.IDLE);
-        }
-
-        //Switch state to AERIAL if player presses Space key
+        //Allow player to jump if their current jump count does not exceed the total jump count amount
         if (Input.GetKeyDown(KeyCode.Space) && player.data.currentJumpCount < player.data.totalJumpCount)
         {
             player.data.currentJumpCount++;
             Jump(player);
-            player.SwitchState(PlayerState.AERIAL);
         }
 
-        //Switch state to AERIAL if player is not touching the floor
-        if (!player.data.isGrounded)
+        //Switch state to MOVING if player is touching ground and velocity is higher than 0
+        if (player.data.isGrounded && player.data.rb.velocity != new Vector3(0, 0, 0))
         {
-            player.SwitchState(PlayerState.AERIAL);
+            player.SwitchState(PlayerState.MOVING);
         }
 
+        //Switch state to IDLE if player is touching ground and velocity is 0
+        if (player.data.isGrounded && player.data.rb.velocity == new Vector3(0, 0, 0))
+        {
+            player.SwitchState(PlayerState.IDLE);
+        }
     }
 
     private void Jump(PlayerStateManager player)
@@ -54,17 +46,14 @@ public class PlayerMovingState : PlayerBaseState
 
     private void MovePlayer(PlayerStateManager player)
     {
-        //Move the player (when on ground)
-        if (player.data.isGrounded)
-        {
-            player.data.rb.AddForce(player.data.moveSpeed * Time.deltaTime * player.data.moveDirection.normalized, ForceMode.Force);
-        }
+        //Player can move mid-air based on air multiplier
+        player.data.rb.AddForce(player.data.moveSpeed * player.data.airMultiplier * Time.deltaTime * player.data.moveDirection.normalized, ForceMode.Force);
+    }
 
-        //Move the player (when in air)
-        else if (!player.data.isGrounded)
-        {
-            player.data.rb.AddForce(player.data.moveSpeed * player.data.airMultiplier * Time.deltaTime * player.data.moveDirection.normalized, ForceMode.Force);
-        }
+    private void HandleDrag(PlayerStateManager player)
+    {
+        //Make player not have any drag when mid-air
+        player.data.rb.drag = 0;
     }
 
     private void GroundCheck(PlayerStateManager player)
@@ -73,25 +62,12 @@ public class PlayerMovingState : PlayerBaseState
         player.data.isGrounded = Physics.Raycast(player.transform.position, Vector3.down, player.data.playerHeight * 0.5f + 0.2f, player.data.groundLayer);
     }
 
-    private void HandleDrag(PlayerStateManager player)
-    {
-        //Handle the drag
-        if (player.data.isGrounded)
-        {
-            player.data.rb.drag = player.data.groundDrag;
-        }
-        else
-        {
-            player.data.rb.drag = 0;
-        }
-    }
-
     private void SpeedControl(PlayerStateManager player)
     {
         Vector3 flatVelocity = new Vector3(player.data.rb.velocity.x, 0f, player.data.rb.velocity.z);
 
         //Limit the player's velocity
-        if(flatVelocity.magnitude > player.data.maxVelocity)
+        if (flatVelocity.magnitude > player.data.maxVelocity)
         {
             Vector3 limitedVelocity = flatVelocity.normalized * player.data.maxVelocity;
             player.data.rb.velocity = new Vector3(limitedVelocity.x, player.data.rb.velocity.y, limitedVelocity.z);

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum PlayerState
 {
     IDLE,
     MOVING,
-    JUMPING,
+    AERIAL,
 }
 
 public class PlayerStateManager : MonoBehaviour
@@ -18,7 +19,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         {PlayerState.IDLE, new PlayerIdleState()},
         {PlayerState.MOVING, new PlayerMovingState()},
-        {PlayerState.JUMPING, new PlayerJumpingState()},
+        {PlayerState.AERIAL, new PlayerAerialState()},
     };
 
     private void Start()
@@ -26,8 +27,6 @@ public class PlayerStateManager : MonoBehaviour
         data = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerData>();
 
         data.rb.freezeRotation = true;
-
-        data.canJump = true;
 
         currentState = PlayerStates[PlayerState.IDLE];
         currentState.EnterState(this);
@@ -46,6 +45,8 @@ public class PlayerStateManager : MonoBehaviour
         //----------------------------------------
 
         MoveInput();
+        Dash();
+        CoyoteJumpTimer();
 
     }
 
@@ -63,17 +64,27 @@ public class PlayerStateManager : MonoBehaviour
 
     private void MovePlayer()
     {
-        data.moveDirection = data.orientation.forward * data.moveVertical + data.orientation.right * data.moveHorizontal;
+        data.moveDirection = (data.orientation.forward * data.moveVertical) + (data.orientation.right * data.moveHorizontal);
     }
 
-    private void ResetJump()
+    private void CoyoteJumpTimer()
     {
-        data.canJump = true;
+        if (data.isGrounded) data.coyoteTimeCounter = data.coyoteTime;
+        else data.coyoteTimeCounter -= Time.deltaTime;
     }
 
-    public void ResetJumpInvoke()
+    private void Dash()
     {
-        Invoke(nameof(ResetJump), data.jumpCooldown);
+        if(data.currentDashCount > 0)
+        {
+            data.dashTimer += Time.deltaTime;
+
+            if(data.dashTimer >= 0f)
+            {
+                data.currentDashCount--;
+                data.dashTimer = 0f;
+            }
+        }
     }
 
 }

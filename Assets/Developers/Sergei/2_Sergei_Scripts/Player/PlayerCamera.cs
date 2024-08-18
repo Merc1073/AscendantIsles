@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
 
+    public Transform orientation;
+
     public float sensX;
     public float sensY;
-
-    public Transform orientation;
 
     float xRotation;
     float yRotation;

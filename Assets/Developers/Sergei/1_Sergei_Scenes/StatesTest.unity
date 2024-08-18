@@ -435,7 +435,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalScale: {x: 500, y: 1, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1054427364}
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 3
+  m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -628,9 +628,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 325fecad90969e3429df8cf6632c07fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orientation: {fileID: 1465825583}
   sensX: 800
   sensY: 800
-  orientation: {fileID: 1465825583}
 --- !u!4 &1465825583 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8834160798725206283, guid: 7d6290227ff61f54bb6408169d319f7a,
@@ -693,6 +693,26 @@ PrefabInstance:
     - target: {fileID: 2124330805277486848, guid: 7d6290227ff61f54bb6408169d319f7a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
+        type: 3}
+      propertyPath: dashForce
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
+        type: 3}
+      propertyPath: maxVelocity
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
+        type: 3}
+      propertyPath: totalJumpCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
+        type: 3}
+      propertyPath: currentJumpCount
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5516451960422682550, guid: 7d6290227ff61f54bb6408169d319f7a,
