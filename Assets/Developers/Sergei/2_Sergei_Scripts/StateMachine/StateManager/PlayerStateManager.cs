@@ -27,6 +27,7 @@ public class PlayerStateManager : MonoBehaviour
         data = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerData>();
 
         data.rb.freezeRotation = true;
+        data.originalVelocity = data.maxVelocity;
 
         currentState = PlayerStates[PlayerState.IDLE];
         currentState.EnterState(this);
@@ -41,12 +42,16 @@ public class PlayerStateManager : MonoBehaviour
     {
         currentState.UpdateState(this);
         data.velocity = data.rb.velocity;
+        data.magnitude = data.rb.velocity.magnitude;
+
+        data.maxVelocity = Mathf.Clamp(data.maxVelocity, data.originalVelocity, data.dashVelocity);
 
         //----------------------------------------
 
         MoveInput();
         Dash();
         CoyoteJumpTimer();
+        ChangeCameraFOV();
 
     }
 
@@ -64,7 +69,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void MovePlayer()
     {
-        data.moveDirection = (data.orientation.forward * data.moveVertical) + (data.orientation.right * data.moveHorizontal);
+        data.moveDirection = (data.playerOrientation.forward * data.moveVertical) + (data.playerOrientation.right * data.moveHorizontal);
     }
 
     private void CoyoteJumpTimer()
@@ -85,6 +90,19 @@ public class PlayerStateManager : MonoBehaviour
                 data.dashTimer = 0f;
             }
         }
+    }
+
+    private void ChangeCameraFOV()
+    {
+        float speed = data.rb.velocity.magnitude;
+
+        float targetFOV = Mathf.Lerp(data.minCameraFOV, data.maxCameraFOV, speed / data.originalVelocity * 0.333333333f);
+
+        data.currentCameraFOV = Mathf.SmoothDamp(data.currentCameraFOV, targetFOV, ref data.cameraVelocityFOV, data.cameraSmoothTime);
+
+        data.currentCameraFOV = Mathf.Clamp(data.currentCameraFOV, data.minCameraFOV, data.maxCameraFOV);
+
+        data.mainCamera.fieldOfView = data.currentCameraFOV;
     }
 
 }

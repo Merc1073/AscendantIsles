@@ -11,18 +11,21 @@ public class PlayerMovingState : PlayerBaseState
     {
         MovePlayer(player);
         Dash(player);
+        DashTimer(player);
         GroundCheck(player);
         HandleDrag(player);
         SpeedControl(player);
 
         //Reset the player jump count so they can jump again
+        //Reset the max velocity of player
         if (player.data.isGrounded)
         {
             player.data.currentJumpCount = 0;
+            player.data.maxVelocity = player.data.originalVelocity;
         }
 
-        //Switch State to IDLE if player's velocity is 0
-        if (player.data.rb.velocity == new Vector3(0, 0, 0))
+        //Switch State to IDLE if player's magnitude is 0
+        if (player.data.rb.velocity.magnitude == 0f)
         {
             player.SwitchState(PlayerState.IDLE);
         }
@@ -88,6 +91,8 @@ public class PlayerMovingState : PlayerBaseState
 
     private void SpeedControl(PlayerStateManager player)
     {
+        if (player.data.isDashing) return;
+
         Vector3 flatVelocity = new Vector3(player.data.rb.velocity.x, 0f, player.data.rb.velocity.z);
 
         //Limit the player's velocity
@@ -102,8 +107,30 @@ public class PlayerMovingState : PlayerBaseState
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && player.data.currentDashCount < player.data.totalDashCount)
         {
+            player.data.isDashing = true;
+            player.data.dashTimer = 0f;
+            player.data.rb.velocity = Vector3.zero;
+            player.data.maxVelocity = player.data.dashVelocity;
+            //player.data.maxVelocity = Mathf.Lerp(player.data.dashVelocity, player.data.maxVelocity, player.data.dashVelocityReduceTime);
             player.data.currentDashCount++;
-            player.data.rb.AddForce(player.data.orientation.forward * player.data.dashForce, ForceMode.Impulse);
+            player.data.rb.AddForce(player.data.cameraOrientation.forward * player.data.dashForce, ForceMode.Impulse);
+        }
+    }
+
+    private void DashTimer(PlayerStateManager player)
+    {
+        if (player.data.isDashing)
+        {
+            player.data.dashTimer += Time.deltaTime;
+
+            player.data.maxVelocity -= 15f * Time.deltaTime;
+
+            if (player.data.dashTimer > 2f)
+            {
+                player.data.maxVelocity = player.data.originalVelocity;
+                player.data.isDashing = false;
+                player.data.dashTimer = 0f;
+            }
         }
     }
 

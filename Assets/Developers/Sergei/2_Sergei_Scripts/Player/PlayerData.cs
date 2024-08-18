@@ -12,8 +12,10 @@ public class PlayerData : MonoBehaviour
     public float moveVertical;
     public Vector3 moveDirection;
     public Vector3 velocity;
+    public float magnitude;
     public float groundDrag;
     public float maxVelocity;
+    public float originalVelocity;
 
     [Header("Jumping Variables")]
     public int totalJumpCount = 1;
@@ -27,7 +29,9 @@ public class PlayerData : MonoBehaviour
     public int currentDashCount = 0;
     public float dashForce;
     public float dashTimer;
-    //public bool isDashing = false;
+    public float dashVelocity;
+    public float dashVelocityReduceTime;
+    public bool isDashing = false;
 
     [Header("QoL Platforming Variables")]
     public float coyoteTime = 0.2f;
@@ -40,8 +44,17 @@ public class PlayerData : MonoBehaviour
     public LayerMask groundLayer;
     public bool isGrounded;
 
+    [Header("Camera Variables")]
+    public float currentCameraFOV;
+    public float minCameraFOV = 90f;
+    public float maxCameraFOV = 150f;
+    public float cameraSmoothTime = 0.2f;
+    public float cameraVelocityFOV;
+
     [Header("Components")]
-    public Transform orientation;
+    public Camera mainCamera;
+    public Transform playerOrientation;
+    public Transform cameraOrientation;
     public Rigidbody rb;
 
 }

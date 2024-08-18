@@ -11,6 +11,7 @@ public class PlayerAerialState : PlayerBaseState
     {
         MovePlayer(player);
         Dash(player);
+        DashTimer(player);
         GroundCheck(player);
         HandleDrag(player);
         SpeedControl(player);
@@ -22,14 +23,14 @@ public class PlayerAerialState : PlayerBaseState
             Jump(player);
         }
 
-        //Switch state to MOVING if player is touching ground and velocity is higher than 0
-        if (player.data.isGrounded && player.data.rb.velocity != new Vector3(0, 0, 0))
+        //Switch state to MOVING if player is touching ground and magnitude is higher than 0
+        if (player.data.isGrounded && player.data.rb.velocity.magnitude > 0f)
         {
             player.SwitchState(PlayerState.MOVING);
         }
 
-        //Switch state to IDLE if player is touching ground and velocity is 0
-        if (player.data.isGrounded && player.data.rb.velocity == new Vector3(0, 0, 0))
+        //Switch state to IDLE if player is touching ground and magnitude is 0
+        if (player.data.isGrounded && player.data.rb.velocity.magnitude == 0f)
         {
             player.SwitchState(PlayerState.IDLE);
         }
@@ -64,6 +65,8 @@ public class PlayerAerialState : PlayerBaseState
 
     private void SpeedControl(PlayerStateManager player)
     {
+        //if (player.data.isDashing) return;
+
         Vector3 flatVelocity = new Vector3(player.data.rb.velocity.x, 0f, player.data.rb.velocity.z);
 
         //Limit the player's velocity
@@ -78,9 +81,30 @@ public class PlayerAerialState : PlayerBaseState
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && player.data.currentDashCount < player.data.totalDashCount)
         {
-            player.data.rb.velocity = new Vector3(0f, 0f, 0f);
+            player.data.isDashing = true;
+            player.data.dashTimer = 0f;
+            player.data.rb.velocity = Vector3.zero;
+            player.data.maxVelocity = player.data.dashVelocity;
+            //player.data.maxVelocity = Mathf.Lerp(player.data.dashVelocity, player.data.maxVelocity, player.data.dashVelocityReduceTime);
             player.data.currentDashCount++;
-            player.data.rb.AddForce(player.data.orientation.forward * player.data.dashForce, ForceMode.Impulse);
+            player.data.rb.AddForce(player.data.cameraOrientation.forward * player.data.dashForce, ForceMode.Impulse);
+        }
+    }
+
+    private void DashTimer(PlayerStateManager player)
+    {
+        if (player.data.isDashing)
+        {
+            player.data.dashTimer += Time.deltaTime;
+
+            player.data.maxVelocity -= player.data.dashVelocityReduceTime * Time.deltaTime;
+
+            if (player.data.dashTimer > 2f)
+            {
+                player.data.maxVelocity = player.data.originalVelocity;
+                player.data.isDashing = false;
+                player.data.dashTimer = 0f;
+            }
         }
     }
 

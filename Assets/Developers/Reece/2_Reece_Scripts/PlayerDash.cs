@@ -7,7 +7,7 @@ public class PlayerDash : MonoBehaviour
 {
 
     private Rigidbody rb;
-    private bool isDashing = true;
+    //private bool isDashing = true;
     public int totalDashCount = 2;
     public int currentDashCount = 0;
     public float dashSpeed;

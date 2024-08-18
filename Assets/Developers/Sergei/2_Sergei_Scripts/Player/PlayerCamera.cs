@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
 
-    public Transform orientation;
+    public Transform cameraOrientation;
 
     public float sensX;
     public float sensY;
@@ -29,6 +29,6 @@ public class PlayerCamera : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        cameraOrientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 }

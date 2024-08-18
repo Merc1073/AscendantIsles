@@ -13,11 +13,14 @@ public class PlayerIdleState : PlayerBaseState
 
         GroundCheck(player);
         Dash(player);
+        DashTimer(player);
 
         //Reset the player jump count so they can jump again
-        if (player.data.isGrounded && !Input.GetKey(KeyCode.Space))
+        //Reset the max velocity of player
+        if (player.data.isGrounded)
         {
             player.data.currentJumpCount = 0;
+            player.data.maxVelocity = player.data.originalVelocity;
         }
 
         //Switch state to MOVING if player inputs a movement key
@@ -26,8 +29,8 @@ public class PlayerIdleState : PlayerBaseState
             player.SwitchState(PlayerState.MOVING);
         }
 
-        //Switch state to MOVING if player's velocity does not equal 0
-        if (player.data.rb.velocity != new Vector3(0, 0, 0))
+        //Switch state to MOVING if player's magnitude does not equal 0
+        if (player.data.rb.velocity.magnitude > 0f)
         {
             player.SwitchState(PlayerState.MOVING);
         }
@@ -66,9 +69,30 @@ public class PlayerIdleState : PlayerBaseState
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && player.data.currentDashCount < player.data.totalDashCount)
         {
-            player.data.rb.velocity = new Vector3(0f, 0f, 0f);
+            player.data.isDashing = true;
+            player.data.dashTimer = 0f;
+            player.data.rb.velocity = Vector3.zero;
+            player.data.maxVelocity = player.data.dashVelocity;
+            //player.data.maxVelocity = Mathf.Lerp(player.data.dashVelocity, player.data.maxVelocity, player.data.dashVelocityReduceTime);
             player.data.currentDashCount++;
-            player.data.rb.AddForce(player.data.orientation.forward * player.data.dashForce, ForceMode.Impulse);
+            player.data.rb.AddForce(player.data.cameraOrientation.forward * player.data.dashForce, ForceMode.Impulse);
+        }
+    }
+
+    private void DashTimer(PlayerStateManager player)
+    {
+        if(player.data.isDashing)
+        {
+            player.data.dashTimer += Time.deltaTime;
+
+            player.data.maxVelocity -= 15f * Time.deltaTime;
+
+            if(player.data.dashTimer > 2f)
+            {
+                player.data.maxVelocity = player.data.originalVelocity;
+                player.data.isDashing = false;
+                player.data.dashTimer = 0f;
+            }
         }
     }
 }
