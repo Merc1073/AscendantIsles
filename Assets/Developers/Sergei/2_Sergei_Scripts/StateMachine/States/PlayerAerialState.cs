@@ -78,6 +78,7 @@ public class PlayerAerialState : PlayerBaseState
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && player.data.currentDashCount < player.data.totalDashCount)
         {
+            player.data.rb.velocity = new Vector3(0f, 0f, 0f);
             player.data.currentDashCount++;
             player.data.rb.AddForce(player.data.orientation.forward * player.data.dashForce, ForceMode.Impulse);
         }
