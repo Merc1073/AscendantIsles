@@ -28,8 +28,6 @@ public class PlayerStateManager : MonoBehaviour
         currentState.EnterState(this);
     }
 
-    
-
     private void Update()
     {
         currentState.UpdateState(this);

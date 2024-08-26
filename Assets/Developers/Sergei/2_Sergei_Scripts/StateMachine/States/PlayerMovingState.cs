@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerMovingState : PlayerBaseState
 {
+
     public override void EnterState(PlayerStateManager player)
     {
         Debug.Log("Player is MOVING.");

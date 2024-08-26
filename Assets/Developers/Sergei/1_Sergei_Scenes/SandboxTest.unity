@@ -1314,6 +1314,32 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &1732338254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3030077683338150350, guid: 7d6290227ff61f54bb6408169d319f7a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5547897240619199448}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732338247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3ca5f3215c770469f57004d431340e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1732338258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732338247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e3eaedfc1e7bb4db7a8b7b6aa1629e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 1732338254}
+  playerVCam: {fileID: 1732338252}
 --- !u!1 &1995565232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,6 +1509,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5516451960422682550, guid: 7d6290227ff61f54bb6408169d319f7a,
+        type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1732338258}
     - targetCorrespondingSourceObject: {fileID: 5516451960422682550, guid: 7d6290227ff61f54bb6408169d319f7a,
         type: 3}
       insertIndex: -1

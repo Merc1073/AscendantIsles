@@ -3,8 +3,6 @@ using UnityEngine;
 public class PlayerIdleState : PlayerBaseState
 {
 
-    PlayerData data;
-
     public override void EnterState(PlayerStateManager player)
     {
         Debug.Log("Player is IDLE.");
