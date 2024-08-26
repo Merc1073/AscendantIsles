@@ -3,6 +3,9 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
 
+    [Header("Current State")]
+    public string state;
+
     [Header("Generic Variables")]
     public float health = 100f;
 
@@ -14,8 +17,10 @@ public class PlayerData : MonoBehaviour
     public Vector3 velocity;
     public float magnitude;
     public float groundDrag;
+    public float airDrag;
     public float maxVelocity;
     public float originalVelocity;
+    public float maxTerminalVelocity = -50f;
 
     [Header("Jumping Variables")]
     public int totalJumpCount = 1;
@@ -45,11 +50,11 @@ public class PlayerData : MonoBehaviour
     public bool isGrounded;
 
     [Header("Camera Variables")]
-    public float currentCameraFOV;
-    public float minCameraFOV = 90f;
-    public float maxCameraFOV = 150f;
-    public float cameraSmoothTime = 0.2f;
-    public float cameraVelocityFOV;
+    //public float currentCameraFOV;
+    //public float minCameraFOV = 90f;
+    //public float maxCameraFOV = 150f;
+    //public float cameraSmoothTime = 0.2f;
+    //public float cameraVelocityFOV;
 
     [Header("Components")]
     public Camera mainCamera;

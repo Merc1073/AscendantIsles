@@ -10,6 +10,7 @@ public class PlayerAerialState : PlayerBaseState
     public override void UpdateState(PlayerStateManager player)
     {
         MovePlayer(player);
+        //GravityControl(player);
         Dash(player);
         DashTimer(player);
         GroundCheck(player);
@@ -54,7 +55,7 @@ public class PlayerAerialState : PlayerBaseState
     private void HandleDrag(PlayerStateManager player)
     {
         //Make player not have any drag when mid-air
-        player.data.rb.drag = 0;
+        player.data.rb.drag = player.data.airDrag;
     }
 
     private void GroundCheck(PlayerStateManager player)
@@ -105,6 +106,20 @@ public class PlayerAerialState : PlayerBaseState
                 player.data.isDashing = false;
                 player.data.dashTimer = 0f;
             }
+        }
+    }
+
+    private void GravityControl(PlayerStateManager player)
+    {
+        //Limit the player's terminal velocity when falling
+        if (player.data.rb.velocity.y < -40f)
+        {
+            player.data.rb.velocity = new Vector3(player.data.rb.velocity.x, -40f, player.data.rb.velocity.z);
+        }
+
+        if (player.data.rb.velocity.y < 0f)
+        {
+            player.data.rb.velocity = new Vector3(player.data.rb.velocity.x, (player.data.rb.velocity.y * 1.002f), player.data.rb.velocity.z);
         }
     }
 

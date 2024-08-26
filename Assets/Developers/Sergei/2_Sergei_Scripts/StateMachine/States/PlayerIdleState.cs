@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerIdleState : PlayerBaseState
 {
 
+    PlayerData data;
+
     public override void EnterState(PlayerStateManager player)
     {
         Debug.Log("Player is IDLE.");
@@ -12,15 +14,14 @@ public class PlayerIdleState : PlayerBaseState
     {
 
         GroundCheck(player);
-        Dash(player);
-        DashTimer(player);
 
-        //Reset the player jump count so they can jump again
-        //Reset the max velocity of player
+        //Reset certain variables when player touches floor again
         if (player.data.isGrounded)
         {
             player.data.currentJumpCount = 0;
             player.data.maxVelocity = player.data.originalVelocity;
+            player.data.dashTimer = 0f;
+            player.data.isDashing = false;
         }
 
         //Switch state to MOVING if player inputs a movement key
@@ -65,34 +66,4 @@ public class PlayerIdleState : PlayerBaseState
         player.data.rb.AddForce(player.transform.up * player.data.jumpForce, ForceMode.Impulse);
     }
 
-    private void Dash(PlayerStateManager player)
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && player.data.currentDashCount < player.data.totalDashCount)
-        {
-            player.data.isDashing = true;
-            player.data.dashTimer = 0f;
-            player.data.rb.velocity = Vector3.zero;
-            player.data.maxVelocity = player.data.dashVelocity;
-            //player.data.maxVelocity = Mathf.Lerp(player.data.dashVelocity, player.data.maxVelocity, player.data.dashVelocityReduceTime);
-            player.data.currentDashCount++;
-            player.data.rb.AddForce(player.data.cameraOrientation.forward * player.data.dashForce, ForceMode.Impulse);
-        }
-    }
-
-    private void DashTimer(PlayerStateManager player)
-    {
-        if(player.data.isDashing)
-        {
-            player.data.dashTimer += Time.deltaTime;
-
-            player.data.maxVelocity -= 15f * Time.deltaTime;
-
-            if(player.data.dashTimer > 2f)
-            {
-                player.data.maxVelocity = player.data.originalVelocity;
-                player.data.isDashing = false;
-                player.data.dashTimer = 0f;
-            }
-        }
-    }
 }
