@@ -124,9 +124,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2124330805277486848}
   - component: {fileID: 519452262572717499}
+  - component: {fileID: 1214772041102630372}
   - component: {fileID: 6974041077849105823}
   - component: {fileID: 8268129045511291845}
   - component: {fileID: 3030077683338150350}
+  - component: {fileID: 1750313952527354557}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -163,8 +165,8 @@ Rigidbody:
   m_GameObject: {fileID: 5516451960422682550}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 10
+  m_AngularDrag: 100
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -181,6 +183,20 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1214772041102630372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516451960422682550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e3eaedfc1e7bb4db7a8b7b6aa1629e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 3030077683338150350}
+  playerVCam: {fileID: 8268129045511291845}
 --- !u!114 &6974041077849105823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 3030077683338150350}
-  vCamShake: {fileID: 8268129045511291845}
 --- !u!114 &8268129045511291845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,11 +222,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d9fd819d5ffd3488e0d410840dfc4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVCam: {fileID: 0}
-  vCamPerlin: {fileID: 0}
+  vCam: {fileID: 0}
+  impulse: {fileID: 1750313952527354557}
   shakeIntensity: 1
   shakeTime: 0.1
   timer: 0
+  rayTimer: 0
+  hasImpactCalculated: 0
+  previousImpactVelocity: 0
+  currentCameraFOV: 0
+  minCameraFOV: 90
+  maxCameraFOV: 150
+  cameraSmoothTime: 0.1
+  cameraVelocityFOV: 0
 --- !u!114 &3030077683338150350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,14 +247,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3ca5f3215c770469f57004d431340e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 
   health: 100
-  moveSpeed: 4000
+  moveSpeed: 8000
   moveHorizontal: 0
   moveVertical: 0
   moveDirection: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   magnitude: 0
-  groundDrag: 5
+  groundDrag: 10
+  airDrag: 0
   maxVelocity: 20
   originalVelocity: 0
   maxTerminalVelocity: -50
@@ -256,15 +281,63 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
-  currentCameraFOV: 0
-  minCameraFOV: 90
-  maxCameraFOV: 150
-  cameraSmoothTime: 0.2
-  cameraVelocityFOV: 0
   mainCamera: {fileID: 0}
   playerOrientation: {fileID: 8834160798725206283}
   cameraOrientation: {fileID: 0}
   rb: {fileID: 519452262572717499}
+--- !u!114 &1750313952527354557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516451960422682550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 1
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 3
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+    m_AmplitudeGain: 5
+    m_FrequencyGain: 0.1
+    m_RepeatMode: 0
+    m_Randomize: 0
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &7187358934066090438
 GameObject:
   m_ObjectHideFlags: 0
