@@ -49,13 +49,6 @@ public class PlayerData : MonoBehaviour
     public LayerMask groundLayer;
     public bool isGrounded;
 
-    [Header("Camera Variables")]
-    //public float currentCameraFOV;
-    //public float minCameraFOV = 90f;
-    //public float maxCameraFOV = 150f;
-    //public float cameraSmoothTime = 0.2f;
-    //public float cameraVelocityFOV;
-
     [Header("Components")]
     public Camera mainCamera;
     public Transform playerOrientation;

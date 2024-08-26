@@ -6,11 +6,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerData data;
     public CameraShake playerVCam;
 
-
-
     //-------------------------------
-
-
 
     private void Start()
     {
@@ -28,7 +24,7 @@ public class PlayerManager : MonoBehaviour
         data.maxVelocity = Mathf.Clamp(data.maxVelocity, data.originalVelocity, data.dashVelocity);
 
         MoveInput();
-        Dash();
+        RegenerateDash();
         CoyoteJumpTimer();
         ChangeCameraFOV();
         CalculateImpactVelocity();
@@ -40,29 +36,35 @@ public class PlayerManager : MonoBehaviour
         GravityControl();
     }
 
+
+
     //-------------------------------
 
 
 
     private void MoveInput()
     {
+        //Get input for player's movement
         data.moveHorizontal = Input.GetAxisRaw("Horizontal");
         data.moveVertical = Input.GetAxisRaw("Vertical");
     }
 
     private void MovePlayer()
     {
+        //Determines the player's move direction
         data.moveDirection = (data.playerOrientation.forward * data.moveVertical) + (data.playerOrientation.right * data.moveHorizontal);
     }
 
     private void CoyoteJumpTimer()
     {
+        //Allows player to jump a few milliseconds after moving off of a platform
         if (data.isGrounded) data.coyoteTimeCounter = data.coyoteTime;
         else data.coyoteTimeCounter -= Time.deltaTime;
     }
 
-    private void Dash()
+    private void RegenerateDash()
     {
+        //Regenerates player's dash based on dash cooldown
         if (data.currentDashCount > 0)
         {
             data.dashTimer += Time.deltaTime;
@@ -76,35 +78,8 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void CalculateImpactVelocity()
-    {
-        ////Check if player is touching the ground
-        //if(data.isGrounded)
-        //{
-        //    playerVCam.rayTimer += Time.deltaTime;
-
-        //    if (playerVCam.rayTimer < 0.1f)
-        //    {
-        //        playerVCam.hasImpactCalculated = false;
-        //    }
-
-        //    if(!playerVCam.hasImpactCalculated)
-        //    {
-        //        playerVCam.previousImpactVelocity = data.rb.velocity.y;
-        //        playerVCam.hasImpactCalculated = true;
-        //    }
-
-        //    if(playerVCam.rayTimer > 0.25f)
-        //    {
-        //        //playerVCam.previousImpactVelocity = 0f;
-        //        playerVCam.rayTimer = 0f;
-        //    }
-        //}
-
-        //else if(!data.isGrounded)
-        //{
-        //    playerVCam.rayTimer = 0f;
-        //}
-
+    { 
+        //Calculates the downwards Y Velocity of player before impact with floor
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 5f))
@@ -114,22 +89,12 @@ public class PlayerManager : MonoBehaviour
                 playerVCam.previousImpactVelocity = data.rb.velocity.y;
             }
         }
-
-
     }
 
     private void ChangeCameraFOV()
     {
-        //float speed = data.rb.velocity.magnitude;
 
-        //float targetFOV = Mathf.Lerp(playerVCam.minCameraFOV, playerVCam.maxCameraFOV, speed / data.originalVelocity * 0.333333333f);
-
-        //playerVCam.currentCameraFOV = Mathf.SmoothDamp(playerVCam.currentCameraFOV, targetFOV, ref playerVCam.cameraVelocityFOV, playerVCam.cameraSmoothTime);
-
-        //playerVCam.currentCameraFOV = Mathf.Clamp(playerVCam.currentCameraFOV, playerVCam.minCameraFOV, playerVCam.maxCameraFOV);
-
-        //playerVCam.vCam.m_Lens.FieldOfView = playerVCam.currentCameraFOV;
-
+        //Change camera FOV based on player's forward Z vector move speed
         Vector3 forwardDirection = data.playerOrientation.forward;
 
         float forwardSpeed = Vector3.Dot(data.rb.velocity, forwardDirection);
@@ -177,6 +142,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        //Shake camera upon impact with floor, based on Y Velocity just before impact
         if (collision.gameObject.CompareTag("Ground"))
         {
             playerVCam.ShakeCamera(playerVCam.shakeIntensity, Mathf.Abs(playerVCam.previousImpactVelocity) * 0.1f);
